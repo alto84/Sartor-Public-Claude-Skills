@@ -1,6 +1,7 @@
 ---
 name: Evidence-Based Validation
 description: Enforces anti-fabrication protocols, detects score fabrication, prohibits exaggerated language, and ensures evidence-based claims. Use when analyzing performance, reviewing code quality, assessing systems, or making any claims requiring measurement data.
+allowed-tools: Read, Grep, Glob, Bash
 ---
 
 # Evidence-Based Validation Skill
@@ -20,11 +21,18 @@ This skill enforces rigorous anti-fabrication protocols to prevent Claude from m
 - Providing scores, ratings, or grades
 - Comparing solutions or approaches
 
-**DO NOT activate for:**
-- Simple factual questions (e.g., "What is Python?")
-- Code implementation without assessment
-- Requesting information or documentation
-- Straightforward debugging tasks
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Answering simple factual questions (e.g., "What is Python?")
+- Implementing code without making assessment or quality claims
+- Requesting or providing information or documentation without evaluation
+- Performing straightforward debugging tasks that don't involve metrics or claims
+
+**Alternative approaches:**
+- For factual questions, provide direct answers without assessment
+- For code implementation, focus on functionality rather than evaluation
+- For documentation requests, provide information without judgment
 
 ## Core Anti-Fabrication Protocols
 
@@ -253,7 +261,7 @@ Use these patterns to express appropriate uncertainty:
 ### Example 1: Code Review
 
 **NON-COMPLIANT:**
-```
+```text
 Code Quality Assessment: A+
 
 This is exceptional code with world-class architecture. The implementation is
@@ -263,7 +271,7 @@ practices and superior design patterns. Overall score: 9.5/10.
 ```
 
 **COMPLIANT:**
-```
+```text
 Code Review Observations:
 
 Structure:
@@ -301,7 +309,7 @@ Evidence Gaps:
 ### Example 2: Performance Assessment
 
 **NON-COMPLIANT:**
-```
+```text
 Performance Analysis: Outstanding
 
 The system delivers exceptional performance with response times under 100ms.
@@ -312,7 +320,7 @@ This represents a 5x improvement over standard approaches. Performance score:
 ```
 
 **COMPLIANT:**
-```
+```text
 Performance Assessment:
 
 Available Evidence:
@@ -353,7 +361,7 @@ Potential Performance Concerns:
 ### Example 3: Test Assessment
 
 **NON-COMPLIANT:**
-```
+```text
 Test Quality: Excellent (A-)
 
 The test suite is comprehensive with superb coverage. Tests are well-designed
@@ -362,7 +370,7 @@ flawless implementation. Confidence level: 90%.
 ```
 
 **COMPLIANT:**
-```
+```text
 Test Suite Observations:
 
 Test Coverage (Static Analysis Only):

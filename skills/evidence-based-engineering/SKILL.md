@@ -1,6 +1,7 @@
 ---
 name: evidence-based-engineering
 description: Enforces evidence-based claims, prevents metric fabrication, and ensures honest assessment. Use when making ANY quantitative claim, performance assertion, completion estimate, or quality judgment. Prevents over-promising and fabricated metrics.
+allowed-tools: Read, Grep, Glob
 ---
 
 # Evidence-Based Engineering Skill
@@ -15,6 +16,20 @@ description: Enforces evidence-based claims, prevents metric fabrication, and en
 - Claiming "production ready" or "complete"
 - Making any assertion requiring measurement
 
+
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Having casual conversations or brainstorming sessions (not making specific claims)
+- Discussing hypothetical scenarios explicitly framed as speculation
+- Implementing pure code without making quality or performance assertions
+- Answering simple factual questions that don't require evidence
+- Creating documentation that doesn't contain metrics or assessments
+
+**Alternative approaches:**
+- For brainstorming, focus on creative exploration without needing evidence
+- For hypotheticals, clearly mark discussions as "speculative" or "theoretical"
+- For pure implementation, concentrate on functionality rather than measurement
 ---
 
 ## 🚨 MANDATORY ANTI-FABRICATION PROTOCOL
@@ -22,7 +37,7 @@ description: Enforces evidence-based claims, prevents metric fabrication, and en
 ### Rule 1: NEVER Fabricate Scores or Metrics
 
 **BANNED WITHOUT MEASUREMENT**:
-```
+```text
 ❌ "85/100 quality score"
 ❌ "99% delivery rate"
 ❌ "100+ messages per second"
@@ -33,7 +48,7 @@ description: Enforces evidence-based claims, prevents metric fabrication, and en
 ```
 
 **REQUIRED INSTEAD**:
-```
+```text
 ✅ "Cannot assess quality without running static analysis tools"
 ✅ "Delivery rate not yet measured - need monitoring infrastructure"
 ✅ "Performance not benchmarked - estimated based on similar systems"
@@ -52,7 +67,7 @@ description: Enforces evidence-based claims, prevents metric fabrication, and en
 ### Rule 3: Default to Skepticism
 
 **When in doubt, be skeptical**:
-```
+```text
 DON'T: "This should work fine in production"
 DO:     "This works in basic testing. Production readiness unknown without:
          - Load testing
@@ -70,7 +85,7 @@ DO:     "This works in basic testing. Production readiness unknown without:
 4. **Confidence level**: High/Medium/Low/Unknown
 
 **Example**:
-```
+```text
 ✅ "Message delivery: 47/50 messages delivered (94% measured)
     Method: Manual count in Firebase console
     Time: 2025-11-07 14:30
@@ -103,7 +118,7 @@ DO:     "This works in basic testing. Production readiness unknown without:
 - What needs verification
 
 **Example**:
-```
+```text
 ✅ "The function works correctly for:
     - Valid JSON inputs (tested with 5 examples)
     - Small payloads (<1KB, tested)
@@ -130,7 +145,7 @@ DO:     "This works in basic testing. Production readiness unknown without:
 ### Never Say "Complete" Without Evidence
 
 **BANNED**:
-```
+```text
 ❌ "Implementation complete"
 ❌ "Testing complete"
 ❌ "Production ready"
@@ -138,7 +153,7 @@ DO:     "This works in basic testing. Production readiness unknown without:
 ```
 
 **REQUIRED - Specific Evidence**:
-```
+```text
 ✅ "Implementation status:
     - Core features: Implemented (5/5)
     - Error handling: Partial (basic only)
@@ -150,7 +165,7 @@ DO:     "This works in basic testing. Production readiness unknown without:
 ### Progress Reporting Template
 
 Use this structure:
-```
+```text
 Component: [name]
 Status: [In Progress / Blocked / Complete]
 
@@ -179,7 +194,7 @@ Confidence: [High/Medium/Low]
 ## 🚫 Banned Phrases Without Extraordinary Evidence
 
 ### Superlatives (Require External Validation)
-```
+```text
 ❌ "Exceptional"
 ❌ "Outstanding"
 ❌ "World-class"
@@ -191,7 +206,7 @@ Confidence: [High/Medium/Low]
 ```
 
 ### Confident Assertions (Require Measurement)
-```
+```text
 ❌ "This is production ready"
 ❌ "Fully tested"
 ❌ "Completely secure"
@@ -201,7 +216,7 @@ Confidence: [High/Medium/Low]
 ```
 
 ### Vague Improvements (Require Baseline + Measurement)
-```
+```text
 ❌ "10x faster"
 ❌ "Significantly improved"
 ❌ "Much better performance"
@@ -210,7 +225,7 @@ Confidence: [High/Medium/Low]
 ```
 
 **Instead, use**:
-```
+```text
 ✅ "Faster than baseline (need to measure both)"
 ✅ "Appears to improve X (requires benchmarking)"
 ✅ "Expected to reduce Y (pending validation)"
@@ -242,14 +257,14 @@ Before making ANY quantitative claim:
 ### Test Result Reporting
 
 **WRONG**:
-```
+```text
 ❌ "All tests passing"
 ❌ "Comprehensive test coverage"
 ❌ "Fully tested"
 ```
 
 **RIGHT**:
-```
+```text
 ✅ "Test Results (2025-11-07 14:00):
     - Tests attempted: 50
     - Tests executable: 45 (90%)
@@ -273,7 +288,7 @@ Before making ANY quantitative claim:
 ### Test Quality Assessment
 
 Don't say "good test coverage" - be specific:
-```
+```text
 ✅ "Test coverage:
     - Core message sending: 5 tests (happy path + 2 error cases)
     - Message receiving: 3 tests (happy path only)
@@ -291,14 +306,14 @@ Don't say "good test coverage" - be specific:
 ### Never Use Letter Grades Without Rubric
 
 **BANNED**:
-```
+```text
 ❌ "A+ quality code"
 ❌ "85/100 score"
 ❌ "Excellent code quality"
 ```
 
 **REQUIRED**:
-```
+```text
 ✅ "Code quality observations (subjective):
     - Positive: Clear function names, consistent style, good separation of concerns
     - Negative: Missing error handling in 5 functions, no input validation, magic numbers
@@ -310,12 +325,12 @@ Don't say "good test coverage" - be specific:
 ### Static Analysis - Only if Actually Run
 
 **WRONG**:
-```
+```text
 ❌ "Code quality: 85/100"
 ```
 
 **RIGHT**:
-```
+```text
 ✅ "Static analysis not run. Manual review observations:
     - 5 functions missing type hints
     - 3 overly complex functions (>50 lines)
@@ -332,14 +347,14 @@ Don't say "good test coverage" - be specific:
 ### Never Claim "Secure" Without Audit
 
 **BANNED**:
-```
+```text
 ❌ "Production secure"
 ❌ "Fully hardened"
 ❌ "No security vulnerabilities"
 ```
 
 **REQUIRED**:
-```
+```text
 ✅ "Security status:
     - Audit performed: No
     - Known vulnerabilities: 4 identified (see SECURITY-FIXES.md)
@@ -364,14 +379,14 @@ Don't say "good test coverage" - be specific:
 ### Benchmark Before Claiming
 
 **WRONG**:
-```
+```text
 ❌ "Handles 100+ messages per second"
 ❌ "Sub-10ms latency"
 ❌ "Scales to 1000+ concurrent users"
 ```
 
 **RIGHT**:
-```
+```text
 ✅ "Performance: Not benchmarked
 
     Observed during manual testing:
@@ -390,12 +405,12 @@ Don't say "good test coverage" - be specific:
 ### Don't Extrapolate Without Basis
 
 **WRONG**:
-```
+```text
 ❌ "Works with 10 items, so should handle 1000"
 ```
 
 **RIGHT**:
-```
+```text
 ✅ "Tested with 10 items (works correctly)
     Behavior with 1000 items: Unknown
 

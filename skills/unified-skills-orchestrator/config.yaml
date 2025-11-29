@@ -1,0 +1,194 @@
+# Unified Skills Orchestrator Configuration
+# Defines skill priorities, dependencies, and activation rules
+
+version: "1.0.0"
+name: "unified-skills-orchestrator"
+
+skill_hierarchy:
+  foundational:
+    priority: 1  # Highest priority
+    skills:
+      - evidence-based-engineering
+      - evidence-based-validation
+    activation: "ALWAYS"
+    description: "Non-negotiable skills that bookend every operation"
+
+  domain:
+    priority: 2
+    skills:
+      - multi-agent-orchestration
+      - agent-communication-system
+      - mcp-server-development
+      - distributed-systems-debugging
+    activation: "CONTEXTUAL"
+    description: "Applied based on task requirements"
+
+  specialized:
+    priority: 3
+    skills:
+      - safety-research-workflow
+    activation: "EXPLICIT"
+    description: "Applied for research and analysis tasks"
+
+skill_dependencies:
+  evidence-based-engineering:
+    depends_on: []
+    provides: ["metrics_baseline", "performance_criteria", "validation_framework"]
+    handoff_to: ["ALL_DOMAIN_SKILLS"]
+
+  evidence-based-validation:
+    depends_on: ["ALL_SKILLS"]
+    provides: ["verification_results", "metric_confirmation", "quality_assurance"]
+    handoff_to: []
+
+  multi-agent-orchestration:
+    depends_on: ["evidence-based-engineering"]
+    provides: ["architecture_design", "consensus_patterns", "coordination_strategy"]
+    handoff_to: ["agent-communication-system", "distributed-systems-debugging"]
+
+  agent-communication-system:
+    depends_on: ["multi-agent-orchestration"]
+    provides: ["protocol_implementation", "message_handlers", "network_layer"]
+    handoff_to: ["distributed-systems-debugging"]
+
+  mcp-server-development:
+    depends_on: ["evidence-based-engineering"]
+    provides: ["server_implementation", "tool_definitions", "api_endpoints"]
+    handoff_to: ["distributed-systems-debugging"]
+
+  distributed-systems-debugging:
+    depends_on: ["ANY_IMPLEMENTATION_SKILL"]
+    provides: ["performance_analysis", "bottleneck_identification", "optimization_results"]
+    handoff_to: ["evidence-based-validation"]
+
+  safety-research-workflow:
+    depends_on: []
+    provides: ["research_methodology", "analysis_framework", "systematic_approach"]
+    handoff_to: ["ALL_SKILLS"]
+
+activation_rules:
+  keywords:
+    multi_agent:
+      triggers: ["agent", "agents", "consensus", "coordination", "distributed decision"]
+      activates: ["multi-agent-orchestration"]
+
+    communication:
+      triggers: ["message", "protocol", "communication", "rpc", "grpc", "websocket"]
+      activates: ["agent-communication-system"]
+
+    mcp_server:
+      triggers: ["mcp", "server", "tool server", "model context protocol"]
+      activates: ["mcp-server-development"]
+
+    debugging:
+      triggers: ["debug", "slow", "bottleneck", "optimize", "profile", "trace"]
+      activates: ["distributed-systems-debugging"]
+
+    research:
+      triggers: ["analyze", "research", "study", "investigate", "methodology"]
+      activates: ["safety-research-workflow"]
+
+    evidence:
+      triggers: ["claim", "metric", "performance", "measure", "verify"]
+      activates: ["evidence-based-engineering", "evidence-based-validation"]
+
+conflict_resolution:
+  rules:
+    - name: "Evidence Override"
+      description: "Evidence skills always take precedence"
+      condition: "skill_conflict"
+      resolution: "evidence_skills_win"
+
+    - name: "Architecture First"
+      description: "Design before implementation"
+      condition: "orchestration_vs_communication"
+      resolution: "orchestration_first"
+
+    - name: "Implementation Before Debug"
+      description: "Build before optimize"
+      condition: "development_vs_debugging"
+      resolution: "development_first"
+
+    - name: "Research Encompasses"
+      description: "Research workflow includes all analysis"
+      condition: "research_vs_any"
+      resolution: "research_coordinates"
+
+execution_patterns:
+  standard_flow:
+    sequence:
+      - evidence-based-engineering
+      - "{domain_skills}"
+      - evidence-based-validation
+
+  research_flow:
+    sequence:
+      - safety-research-workflow
+      - evidence-based-engineering
+      - "{all_relevant_skills}"
+      - evidence-based-validation
+
+  debug_flow:
+    sequence:
+      - evidence-based-engineering
+      - distributed-systems-debugging
+      - "{fix_implementation}"
+      - evidence-based-validation
+
+  full_stack_flow:
+    sequence:
+      - evidence-based-engineering
+      - multi-agent-orchestration
+      - agent-communication-system
+      - mcp-server-development
+      - distributed-systems-debugging
+      - evidence-based-validation
+
+handoff_protocols:
+  data_requirements:
+    evidence_to_domain:
+      required: ["metrics_baseline", "success_criteria"]
+      optional: ["measurement_tools", "benchmarks"]
+
+    domain_to_domain:
+      required: ["implementation_details", "interface_contracts"]
+      optional: ["known_issues", "optimization_hints"]
+
+    domain_to_validation:
+      required: ["claimed_metrics", "test_results"]
+      optional: ["failure_scenarios", "edge_cases"]
+
+monitoring:
+  metrics:
+    - skill_activation_frequency
+    - average_skills_per_task
+    - conflict_resolution_count
+    - handoff_success_rate
+    - validation_pass_rate
+    - feedback_loop_count
+
+  alerts:
+    - condition: "validation_failure_rate > 0.3"
+      action: "review_evidence_criteria"
+
+    - condition: "average_skills_per_task > 5"
+      action: "check_over_orchestration"
+
+    - condition: "conflict_count > 10_per_hour"
+      action: "review_conflict_rules"
+
+optimization_hints:
+  performance:
+    - "Cache skill activation decisions for similar tasks"
+    - "Pre-load common skill combinations"
+    - "Parallelize independent validations"
+
+  quality:
+    - "Always measure, never estimate"
+    - "Document decision rationale"
+    - "Preserve handoff context"
+
+  usability:
+    - "Provide clear skill activation explanation"
+    - "Show progress through skill chain"
+    - "Highlight validation results"

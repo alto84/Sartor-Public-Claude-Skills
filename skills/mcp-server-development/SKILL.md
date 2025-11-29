@@ -21,6 +21,21 @@ Activate this skill when:
 - Creating tests for MCP servers
 - Understanding MCP protocol message formats
 
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Building traditional HTTP/REST APIs (use standard web frameworks like Express, FastAPI instead)
+- Developing client-side tools that don't expose MCP servers
+- Creating integrations for non-Claude systems that don't support MCP
+- Writing simple scripts that don't require protocol-based communication
+- Building standalone CLIs that don't need to be consumed by other tools
+
+**Alternative approaches:**
+- For HTTP/REST APIs, use frameworks like Express, FastAPI, or Flask
+- For client-side tools, focus on the tool implementation without MCP wrapping
+- For non-Claude integrations, use the target system's native integration methods
+- For simple scripts, execute directly without protocol overhead
+
 ## MCP Architecture Fundamentals
 
 ### Core Components

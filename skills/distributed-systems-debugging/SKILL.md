@@ -20,6 +20,33 @@ Distributed systems debugging is fundamentally different from debugging single-p
 
 This skill helps you systematically investigate these challenges using evidence-based debugging techniques extracted from actual distributed system development.
 
+## When to Use This Skill
+
+Use this skill when:
+- Debugging multi-node or multi-agent systems with coordination issues
+- Investigating consensus mechanism failures (Raft, BFT, etc.)
+- Analyzing distributed traces and message flows
+- Resolving state synchronization conflicts between nodes
+- Diagnosing network partition effects and split-brain scenarios
+- Troubleshooting cascading failures in distributed architectures
+- Analyzing performance degradation in distributed systems
+
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Debugging single-process, single-thread applications
+- Working with simple synchronous code issues
+- Troubleshooting UI/UX problems not related to distributed state
+- Performing performance optimization on standalone components without distributed aspects
+- Debugging local file I/O or database issues in non-distributed contexts
+- Fixing syntax errors or simple logic bugs
+
+**Alternative approaches:**
+- For single-process debugging, use standard debuggers (gdb, pdb, Chrome DevTools)
+- For synchronous code issues, use traditional debugging techniques and unit tests
+- For UI/UX problems, focus on frontend debugging tools and user testing
+- For local performance issues, use profilers specific to your language/platform
+
 ## Core Debugging Methodology
 
 ### 1. Observe (Gather Evidence)

@@ -1,0 +1,190 @@
+# Orchestrator Decision Test Cases
+# These test cases validate the orchestrator's skill activation logic
+
+test_cases:
+  - name: "Simple MCP Server Creation"
+    input: "Create an MCP server for file operations"
+    expected_skills:
+      - evidence-based-engineering
+      - mcp-server-development
+      - evidence-based-validation
+    should_not_activate:
+      - multi-agent-orchestration
+      - safety-research-workflow
+
+  - name: "Complex Multi-Agent System"
+    input: "Build a distributed consensus system with 5 agents that communicate via gRPC"
+    expected_skills:
+      - evidence-based-engineering
+      - multi-agent-orchestration
+      - agent-communication-system
+      - distributed-systems-debugging
+      - evidence-based-validation
+    should_not_activate:
+      - safety-research-workflow
+
+  - name: "Performance Optimization Task"
+    input: "The server is slow, debug and optimize for better performance"
+    expected_skills:
+      - evidence-based-engineering
+      - distributed-systems-debugging
+      - evidence-based-validation
+    should_not_activate:
+      - multi-agent-orchestration
+      - mcp-server-development
+
+  - name: "Research and Analysis"
+    input: "Analyze the architecture of this system and provide recommendations"
+    expected_skills:
+      - safety-research-workflow
+      - evidence-based-engineering
+      - multi-agent-orchestration
+      - distributed-systems-debugging
+      - evidence-based-validation
+    notes: "Research tasks should activate most skills for comprehensive analysis"
+
+  - name: "Simple Information Query"
+    input: "What is MCP?"
+    expected_skills: []
+    notes: "Simple questions should not trigger orchestration"
+
+  - name: "Performance Claim Verification"
+    input: "Verify that the server handles 1000 requests per second"
+    expected_skills:
+      - evidence-based-engineering
+      - distributed-systems-debugging
+      - evidence-based-validation
+    should_not_activate:
+      - mcp-server-development
+      - multi-agent-orchestration
+
+  - name: "Communication Protocol Implementation"
+    input: "Implement WebSocket communication between services"
+    expected_skills:
+      - evidence-based-engineering
+      - agent-communication-system
+      - evidence-based-validation
+    should_not_activate:
+      - multi-agent-orchestration
+      - safety-research-workflow
+
+  - name: "Full Stack Development"
+    input: "Create a complete multi-agent MCP server system with debugging"
+    expected_skills:
+      - evidence-based-engineering
+      - multi-agent-orchestration
+      - agent-communication-system
+      - mcp-server-development
+      - distributed-systems-debugging
+      - evidence-based-validation
+    notes: "Should activate all domain skills but not research"
+
+conflict_resolution_tests:
+  - name: "MCP vs Multi-Agent Priority"
+    scenario: "User asks for 'MCP server for agent coordination'"
+    primary_skill: mcp-server-development
+    secondary_skill: multi-agent-orchestration
+    resolution: "MCP takes priority as it's the primary deliverable"
+
+  - name: "Research vs Implementation"
+    scenario: "Analyze and implement the best consensus algorithm"
+    primary_skill: safety-research-workflow
+    secondary_skill: multi-agent-orchestration
+    resolution: "Research first to determine best approach, then implement"
+
+  - name: "Debugging vs Development"
+    scenario: "Fix the broken server implementation"
+    primary_skill: distributed-systems-debugging
+    secondary_skill: mcp-server-development
+    resolution: "Debug first to understand issue, then fix in development"
+
+skill_ordering_tests:
+  - name: "Evidence Always First"
+    input_skills: [multi-agent-orchestration, evidence-based-engineering]
+    correct_order: [evidence-based-engineering, multi-agent-orchestration]
+
+  - name: "Validation Always Last"
+    input_skills: [evidence-based-validation, mcp-server-development]
+    correct_order: [mcp-server-development, evidence-based-validation]
+
+  - name: "Architecture Before Implementation"
+    input_skills: [agent-communication-system, multi-agent-orchestration]
+    correct_order: [multi-agent-orchestration, agent-communication-system]
+
+  - name: "Implementation Before Debugging"
+    input_skills: [distributed-systems-debugging, mcp-server-development]
+    correct_order: [mcp-server-development, distributed-systems-debugging]
+
+  - name: "Research Encompasses All"
+    input_skills: [safety-research-workflow, evidence-based-engineering, multi-agent-orchestration]
+    correct_order: [safety-research-workflow, evidence-based-engineering, multi-agent-orchestration]
+
+handoff_validation:
+  - from_skill: evidence-based-engineering
+    to_skill: mcp-server-development
+    required_data:
+      - performance_requirements
+      - measurement_criteria
+      - validation_thresholds
+
+  - from_skill: multi-agent-orchestration
+    to_skill: agent-communication-system
+    required_data:
+      - agent_topology
+      - consensus_mechanism
+      - message_types
+      - coordination_patterns
+
+  - from_skill: mcp-server-development
+    to_skill: distributed-systems-debugging
+    required_data:
+      - server_configuration
+      - implemented_tools
+      - known_issues
+      - test_endpoints
+
+  - from_skill: distributed-systems-debugging
+    to_skill: evidence-based-validation
+    required_data:
+      - performance_measurements
+      - bottleneck_analysis
+      - optimization_results
+      - error_rates
+
+anti_pattern_tests:
+  - name: "No Evidence Foundation"
+    pattern: "Skip directly to implementation"
+    detection: "No evidence-based-engineering in skill list"
+    action: "Force prepend evidence-based-engineering"
+
+  - name: "No Validation Closure"
+    pattern: "Implementation without validation"
+    detection: "No evidence-based-validation at end"
+    action: "Force append evidence-based-validation"
+
+  - name: "Parallel Conflicts"
+    pattern: "Running multi-agent and mcp-server simultaneously"
+    detection: "Both skills active with overlapping scope"
+    action: "Serialize with clear boundaries"
+
+  - name: "Over Orchestration"
+    pattern: "Activating all skills unnecessarily"
+    detection: "Simple task with 5+ skills activated"
+    action: "Reduce to essential skills only"
+
+edge_cases:
+  - name: "Circular Dependency"
+    scenario: "Debugging reveals architecture issue requiring orchestration change"
+    resolution: "Loop back with state preservation"
+
+  - name: "Skill Failure"
+    scenario: "MCP development fails due to missing dependencies"
+    resolution: "Escalate to debugging, then retry"
+
+  - name: "Validation Rejection"
+    scenario: "Evidence validation fails all metrics"
+    resolution: "Full restart with revised requirements"
+
+  - name: "Incomplete Handoff"
+    scenario: "Missing data in skill transition"
+    resolution: "Request missing data from previous skill"

@@ -21,6 +21,21 @@ Use this skill when you need to:
 5. **Optimize agent communication** - Improve message routing, reduce latency, prevent cascading failures
 6. **Implement distributed state** - Apply CRDTs, vector clocks, conflict detection patterns
 
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Working with single-agent systems that don't need coordination
+- Building simple request-response patterns without complex state management
+- Systems that don't require consensus or distributed state management
+- Prototyping solutions that don't need multi-agent coordination
+- Implementing straightforward linear workflows without parallel execution
+
+**Alternative approaches:**
+- For single-agent systems, focus on the agent's core logic without orchestration overhead
+- For simple request-response, use standard client-server patterns
+- For prototypes, start with single-agent implementation and add orchestration later if needed
+- For linear workflows, use simple pipeline or chain-of-responsibility patterns
+
 ## Core Orchestration Patterns
 
 ### 1. Consensus Mechanisms
@@ -42,7 +57,7 @@ Multi-agent systems require consensus for coordinated decision-making. Choose ba
 - **Limitations**: High message overhead, computational cost, scales poorly beyond 20-30 nodes
 
 **Decision Matrix**:
-```
+```text
 Crash faults only + High throughput needed → Raft
 Byzantine faults possible + Security critical → BFT
 Very large networks (>30 nodes) + Partial consistency acceptable → Gossip protocols
@@ -237,7 +252,7 @@ grep -r "CRDT\|vectorClock\|merge" /path/to/codebase
 ## Architecture Patterns
 
 ### Pattern 1: Hierarchical Orchestration
-```
+```text
 Orchestrator (Coordinator)
 ├── Agent Registry (Discovery)
 ├── Task Queue (Distribution)
@@ -248,7 +263,7 @@ Orchestrator (Coordinator)
 **Tradeoffs**: Single point of failure, simpler reasoning, potential bottleneck
 
 ### Pattern 2: Peer-to-Peer Collaboration
-```
+```text
 Agent A ←→ Agent B
    ↕          ↕
 Agent C ←→ Agent D
@@ -257,7 +272,7 @@ Agent C ←→ Agent D
 **Tradeoffs**: More complex coordination, higher message overhead, better fault tolerance
 
 ### Pattern 3: Leader-Based Consensus
-```
+```text
 Leader (Raft/BFT)
 ├── Follower 1
 ├── Follower 2
@@ -267,7 +282,7 @@ Leader (Raft/BFT)
 **Tradeoffs**: Simpler than P2P, leader is bottleneck, requires majority for progress
 
 ### Pattern 4: Gossip-Based Eventual Consistency
-```
+```text
 Agent A → Agent B → Agent C
    ↓         ↓         ↓
 Agent D ← Agent E ← Agent F

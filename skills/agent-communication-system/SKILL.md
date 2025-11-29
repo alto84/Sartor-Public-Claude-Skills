@@ -24,6 +24,20 @@ Use this skill when you need to:
 6. **Debug communication** - Trace message flow, diagnose coordination issues
 7. **Optimize throughput** - Improve message delivery, reduce latency, prevent bottlenecks
 
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Working with single-agent systems that don't require coordination
+- Building simple direct human-to-agent interfaces (not agent-to-agent communication)
+- Using external orchestration frameworks that already handle agent communication (e.g., Kubernetes operators, Apache Airflow)
+- Developing standalone CLI tools without inter-process communication needs
+- Creating basic REST APIs where standard web frameworks suffice
+
+**Alternative approaches:**
+- For single-agent tasks, focus on the agent's core functionality without communication overhead
+- For human-to-agent interfaces, use standard UI/API patterns instead of agent protocols
+- For orchestration with existing frameworks, leverage their native coordination features
+
 ## Core Implementation Patterns
 
 ### 1. Inter-Agent Coordinator
@@ -646,7 +660,7 @@ class QualityGateSystem {
    - Contradictions identified
 
 **Gate Execution Flow**:
-```
+```text
 Agent Completes Task
     ↓
 For Each Quality Gate:
@@ -737,7 +751,7 @@ class AssistanceRouter {
 ```
 
 **Assistance Flow**:
-```
+```text
 Agent Needs Help
     ↓
 Create AssistanceRequest
@@ -766,7 +780,7 @@ Requesting Agent Continues
 
 **From**: SKG Agent Prototype implementations
 
-```
+```text
 EnhancedOrchestrator
 ├── Agent Registration & Discovery
 ├── Task Distribution
@@ -793,7 +807,7 @@ EnhancedOrchestrator
 
 **From**: Agent Community Game
 
-```
+```text
 Audit Agent                Implementation Agent
     ↓                              ↓
 Write: instructions/task.json    Poll: instructions/
@@ -818,7 +832,7 @@ Read: completions/task.json     Write: completions/task.json
 
 **From**: MCP Protocol implementations
 
-```
+```text
         MCPHub (Router)
        /  |  |  |  \
       /   |  |  |   \
@@ -951,6 +965,9 @@ interface CoordinationMetrics {
 - "Conflict detection with configurable resolution"
 
 ## References
+
+> **Note**: Implementation paths below reference the original SKG Agent Prototype development environment.
+> These paths document the source architecture - see `templates/` for portable examples.
 
 Implementation files:
 - `/home/alton/SKG-Agent-Prototype-Private/src/ai/communication/inter-agent-coordinator.ts`

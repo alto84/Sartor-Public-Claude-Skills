@@ -24,6 +24,21 @@ Use this skill when:
 - Synthesizing findings from multiple sources with proper attribution
 - Conducting evidence-based analysis with rigorous methodology
 
+## When NOT to Use This Skill
+
+Do NOT activate this skill when:
+- Conducting non-research tasks like implementation or debugging
+- Gathering information informally without rigorous methodology requirements
+- Performing quick fact-checking (use simple web search instead)
+- Working on topics that don't require systematic research methodology
+- Creating content that doesn't need citations or evidence chains
+
+**Alternative approaches:**
+- For implementation tasks, focus on code development skills
+- For informal information gathering, use conversational exploration
+- For quick fact-checking, use web search without full research workflow
+- For non-research topics, apply domain-specific skills directly
+
 ## Core Principles
 
 ### 1. Evidence-Based Only
@@ -287,7 +302,7 @@ Use this skill when:
 **Use when:** Research stages have clear dependencies
 
 **Structure:**
-```
+```text
 Agent A (Search) → Agent B (Extraction) → Agent C (Validation) → Agent D (Synthesis)
 ```
 
@@ -303,7 +318,7 @@ Agent A (Search) → Agent B (Extraction) → Agent C (Validation) → Agent D (
 **Use when:** Different research domains can be explored simultaneously
 
 **Structure:**
-```
+```text
                     ┌→ Agent A (Clinical Evidence)
 Research Question ──┼→ Agent B (Mechanistic Studies)
                     └→ Agent C (Regulatory Documents)
@@ -323,7 +338,7 @@ Research Question ──┼→ Agent B (Mechanistic Studies)
 **Use when:** Quality assurance requires iterative refinement
 
 **Structure:**
-```
+```text
 Agent A (Executor) ←→ Agent B (Validator)
         ↓
     Final Output
@@ -341,7 +356,7 @@ Agent A (Executor) ←→ Agent B (Validator)
 **Use when:** Maximum rigor required, multiple independent validations needed
 
 **Structure:**
-```
+```text
 Agent A (Primary) → Agent B (Validator 1) ↘
                                            Agent D (Synthesis)
 Agent C (Independent) → (no cross-talk) ↗
@@ -447,17 +462,17 @@ Agent C (Independent) → (no cross-talk) ↗
 ### Citation Formats
 
 **Medical/Clinical Research:**
-```
+```text
 Author A, Author B, Author C. Title of the article. Journal Name. Year;Volume(Issue):Pages. PMID: 12345678. DOI: 10.1234/journal.2024.56789
 ```
 
 **Technical/Engineering:**
-```
+```text
 Author A, Author B (Year). Title of the article. Journal Name, Volume(Issue), Pages. https://doi.org/10.1234/journal.2024.56789
 ```
 
 **Regulatory Documents:**
-```
+```text
 Regulatory Agency. Document Title. Publication Date. Accessed: Date. URL
 ```
 
