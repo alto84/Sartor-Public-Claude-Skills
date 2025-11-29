@@ -109,10 +109,11 @@ const plan = coordinator.planCoordination({
 await coordinator.executeWithCoordination(plan);
 ```
 
-**Evidence-Based Performance**:
-- Cannot determine exact throughput without load testing
-- Requires measurement for latency claims
-- Coordination overhead depends on message count and agent complexity
+**Performance Considerations**:
+- Throughput depends on message queue implementation and processing complexity
+- Latency affected by coordination plan complexity and agent response times
+- Memory usage scales with number of registered agents and shared data pool size
+- Consider batching messages to reduce coordination overhead
 
 ### 2. Communicative Agent Base Class
 
@@ -349,10 +350,11 @@ class MCPHub {
 }
 ```
 
-**Evidence-Based Performance**:
-- Requires actual load testing to determine throughput
-- Retry overhead depends on network conditions (cannot estimate without measurement)
-- Priority queue implementation affects latency distribution
+**Performance Considerations**:
+- Message throughput affected by priority queue implementation and retry logic
+- Network conditions impact retry overhead and delivery success rates
+- Consider implementing backpressure mechanisms to prevent queue overflow
+- Priority levels should balance urgency with fairness to prevent starvation
 
 ### 4. File-Based Communication Protocol
 
@@ -418,10 +420,11 @@ communication/
 - Efficient: Use filesystem watchers (inotify on Linux)
 - Hybrid: Watch for new files, poll for updates
 
-**Evidence-Based Performance**:
-- File I/O latency varies by filesystem (cannot claim specific times)
-- Polling interval affects responsiveness (tradeoff: latency vs CPU)
-- Not suitable for high-frequency communication (measurement needed for threshold)
+**Performance Considerations**:
+- File I/O latency depends on filesystem type (NFS vs local SSD vs HDD)
+- Polling interval creates tradeoff between responsiveness and CPU usage
+- File watching (inotify) more efficient than polling for low-frequency updates
+- Best suited for workflows with seconds-to-minutes timescales, not milliseconds
 
 ### 5. Shared Data Pool Management
 
@@ -529,10 +532,11 @@ class SharedDataPool {
 - Compression for large entries
 - Offload to disk for historical data
 
-**Evidence-Based Performance**:
-- Memory usage scales with entry count (requires measurement)
-- Access log growth rate depends on read frequency
-- Compression ratio varies by data type (cannot estimate without testing)
+**Performance Considerations**:
+- Memory usage scales linearly with entry count and average entry size
+- Access log can become a bottleneck with high read frequency - consider sampling
+- Compression most effective for text/JSON data (2-10x), less for binary data
+- Consider implementing tiered storage: hot data in memory, warm on SSD, cold archived
 
 ### 6. Quality Gates and Validation
 
@@ -676,10 +680,11 @@ All Gates Passed
 Accept Output
 ```
 
-**Evidence-Based Performance**:
-- Gate evaluation time varies by complexity (measurement needed)
-- Peer review latency depends on reviewer availability
-- Cannot estimate without actual gate execution data
+**Performance Considerations**:
+- Gate evaluation time scales with complexity of validation logic
+- Peer review introduces human-scale latency (seconds to minutes)
+- Consider caching validation results for identical inputs
+- Parallel gate evaluation can reduce total validation time
 
 ### 7. Assistance Request and Routing
 
@@ -930,6 +935,103 @@ interface CoordinationMetrics {
 - Check: Blocking quality gates with no retry
 - Check: Message queue full
 
+## Security Considerations
+
+When implementing agent communication systems, consider these security aspects:
+
+### Message Authentication
+- Verify message source authenticity
+- Prevent message spoofing between agents
+- Consider signing messages with agent-specific keys
+
+### Authorization
+- Validate agents can perform requested operations
+- Implement capability-based access control
+- Restrict access to shared data pool by role
+
+### Data Protection
+- Encrypt sensitive data in transit
+- Sanitize inputs to prevent injection attacks
+- Validate message content against expected schemas
+
+### Denial of Service Prevention
+- Implement rate limiting per agent
+- Set maximum message sizes
+- Use timeouts on all operations
+- Monitor for unusual patterns
+
+### Audit Trail
+- Log all inter-agent communications
+- Record access to shared data pool
+- Maintain history for debugging and compliance
+
+## Error Handling Patterns
+
+### Message Delivery Failures
+```typescript
+async function sendWithRetry(
+  message: MCPMessage,
+  maxRetries: number = 3
+): Promise<void> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      await this.send(message);
+      return;
+    } catch (error) {
+      if (attempt === maxRetries - 1) throw error;
+      await this.delay(Math.pow(2, attempt) * 1000);
+    }
+  }
+}
+```
+
+### Agent Timeout Handling
+```typescript
+async function executeWithTimeout<T>(
+  operation: () => Promise<T>,
+  timeoutMs: number
+): Promise<T> {
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error('Operation timed out')), timeoutMs)
+  );
+  return Promise.race([operation(), timeoutPromise]);
+}
+```
+
+### Circuit Breaker Pattern
+```typescript
+class CircuitBreaker {
+  private failures = 0;
+  private lastFailure = 0;
+  private readonly threshold = 5;
+  private readonly resetTime = 60000;
+
+  async call<T>(operation: () => Promise<T>): Promise<T> {
+    if (this.isOpen()) {
+      throw new Error('Circuit breaker is open');
+    }
+    try {
+      const result = await operation();
+      this.reset();
+      return result;
+    } catch (error) {
+      this.recordFailure();
+      throw error;
+    }
+  }
+
+  private isOpen(): boolean {
+    if (this.failures < this.threshold) return false;
+    return Date.now() - this.lastFailure < this.resetTime;
+  }
+}
+```
+
+### Graceful Degradation
+- Implement fallback strategies when agents are unavailable
+- Queue messages for later delivery during outages
+- Provide degraded functionality rather than complete failure
+
 ## Integration with Other Skills
 
 - **Multi-Agent Orchestration**: Theoretical foundation for communication patterns
@@ -964,10 +1066,32 @@ interface CoordinationMetrics {
 - "Best-effort coordination with quality gates"
 - "Conflict detection with configurable resolution"
 
+## Testing Strategies
+
+### Unit Testing Agents
+- Mock the coordinator to test agent logic in isolation
+- Test message serialization/deserialization
+- Verify progress reporting at expected intervals
+
+### Integration Testing
+- Test two agents communicating through real coordinator
+- Verify message ordering and delivery guarantees
+- Test quality gate enforcement
+
+### Chaos Testing
+- Simulate agent crashes during communication
+- Test network partition scenarios
+- Verify recovery after coordinator restart
+
+### Load Testing
+- Measure throughput under various agent counts
+- Monitor latency distribution under load
+- Identify bottlenecks in message routing
+
 ## References
 
 > **Note**: Implementation paths below reference the original SKG Agent Prototype development environment.
-> These paths document the source architecture - see `templates/` for portable examples.
+> These paths document the source architecture - see `templates/` directory for complete implementations including `inter-agent-coordinator.ts`, `communicative-agent.ts`, `message-types.ts`, and `quality-gate.ts`.
 
 Implementation files:
 - `/home/alton/SKG-Agent-Prototype-Private/src/ai/communication/inter-agent-coordinator.ts`
