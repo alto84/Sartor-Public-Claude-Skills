@@ -18,7 +18,11 @@ import {
   ValidationAgent,
   ResearchAgent,
   SynthesisAgent,
-  AutonomousAgent
+  AutonomousAgent,
+  QualityGateAgent,
+  MonitorAgent,
+  AuditAgent,
+  GitAgent
 } from '../templates/swarm-agent';
 
 /**
@@ -215,23 +219,29 @@ export async function spawnSwarm(customConfig?: Partial<SwarmConfig>): Promise<{
 
   console.error('[Swarm] Starting community swarm initialization...');
 
-  // Spawn core agents in parallel where possible
-  const coreAgents = [
+  // Spawn all 10 agents in parallel
+  const allAgents = [
+    // Core task agents (use opus for complex reasoning)
     new AssessmentAgent(coordinator),
     new ImplementationAgent(coordinator),
     new ValidationAgent(coordinator),
     new ResearchAgent(coordinator),
     new SynthesisAgent(coordinator),
-    new AutonomousAgent(coordinator)
+    new AutonomousAgent(coordinator),
+    // Support agents (use haiku for fast operations)
+    new QualityGateAgent(coordinator),
+    new MonitorAgent(coordinator),
+    new AuditAgent(coordinator),
+    new GitAgent(coordinator)
   ];
 
-  // Initialize core agents
-  await Promise.all(coreAgents.map(async (agent) => {
+  // Initialize all 10 agents
+  await Promise.all(allAgents.map(async (agent) => {
     await agent.initialize();
     agents.set((agent as any).agentId, agent);
   }));
 
-  console.error(`[Swarm] Initialized ${agents.size} agents`);
+  console.error(`[Swarm] Initialized all ${agents.size} agents (6 opus + 4 haiku)`);
 
   // Verify all agents registered
   const status = coordinator.getStatus();

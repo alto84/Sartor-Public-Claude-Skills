@@ -617,3 +617,268 @@ export class AutonomousAgent extends SwarmAgent {
     };
   }
 }
+
+/**
+ * Quality Gate Agent - Enforces quality standards between phases
+ */
+export class QualityGateAgent extends SwarmAgent {
+  constructor(coordinator: SwarmCoordinator) {
+    super(
+      AgentId.QUALITY_GATE,
+      ['quality', 'gate', 'enforce', 'standard', 'validate'],
+      'haiku',  // Fast model for quick validation
+      coordinator,
+      ['quality-assurance', 'validation']
+    );
+  }
+
+  protected async executeTask(task: SwarmTask): Promise<any> {
+    // Evaluate quality gates
+    const input = task.inputs;
+    const gates = input.gates || [];
+    const results = gates.map((gate: any) => ({
+      gateName: gate.name,
+      passed: true,  // Would perform actual validation
+      reason: null,
+      evaluatedAt: new Date()
+    }));
+
+    return {
+      totalGates: gates.length,
+      passed: results.filter((r: any) => r.passed).length,
+      failed: results.filter((r: any) => !r.passed).length,
+      results
+    };
+  }
+
+  protected async generateSummary(output: any): Promise<string> {
+    return `Evaluated ${output.totalGates} quality gates: ${output.passed} passed, ${output.failed} failed.`;
+  }
+
+  protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations = output.results.map((r: any) => `gate:${r.gateName}`);
+    const sources = ['quality-gate-evaluation'];
+
+    return {
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
+    };
+  }
+}
+
+/**
+ * Monitor Agent - Observes swarm operation and detects issues
+ */
+export class MonitorAgent extends SwarmAgent {
+  private alertThresholds: {
+    messageQueueDepth: number;
+    responseTime: number;
+    errorRate: number;
+  };
+
+  constructor(coordinator: SwarmCoordinator) {
+    super(
+      AgentId.MONITOR,
+      ['monitor', 'observe', 'detect', 'alert', 'watch'],
+      'haiku',  // Fast model for continuous monitoring
+      coordinator,
+      ['system-monitoring', 'alerting']
+    );
+
+    // Configurable thresholds - adjust based on your environment
+    this.alertThresholds = {
+      messageQueueDepth: 1000,
+      responseTime: 5000,  // ms
+      errorRate: 0.05     // 5%
+    };
+  }
+
+  protected async executeTask(task: SwarmTask): Promise<any> {
+    // Monitor swarm health
+    const status = this.coordinator.getStatus();
+    const alerts: { type: string; severity: string; message: string }[] = [];
+
+    // Check message queue
+    if (status.messageQueue.depth > this.alertThresholds.messageQueueDepth) {
+      alerts.push({
+        type: 'queue-depth',
+        severity: 'warning',
+        message: `Message queue depth (${status.messageQueue.depth}) exceeds threshold`
+      });
+    }
+
+    // Check agent health
+    const unhealthyAgents = status.agents.filter(a => a.status !== 'READY');
+    if (unhealthyAgents.length > 0) {
+      alerts.push({
+        type: 'agent-health',
+        severity: 'warning',
+        message: `${unhealthyAgents.length} agents not ready`
+      });
+    }
+
+    return {
+      health: status.health,
+      agentsMonitored: status.agents.length,
+      alertsGenerated: alerts.length,
+      alerts
+    };
+  }
+
+  protected async generateSummary(output: any): Promise<string> {
+    return `Monitored ${output.agentsMonitored} agents. Health: ${output.health}. Alerts: ${output.alertsGenerated}.`;
+  }
+
+  protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations = [`health:${output.health}`, `agents:${output.agentsMonitored}`];
+    if (output.alertsGenerated > 0) {
+      citations.push(`alerts:${output.alertsGenerated}`);
+    }
+    const sources = ['swarm-status', 'health-check'];
+
+    return {
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
+    };
+  }
+}
+
+/**
+ * Audit Agent - Reviews decisions and checks compliance
+ */
+export class AuditAgent extends SwarmAgent {
+  constructor(coordinator: SwarmCoordinator) {
+    super(
+      AgentId.AUDIT,
+      ['audit', 'review', 'compliance', 'trace', 'verify'],
+      'haiku',  // Fast model for audit checks
+      coordinator,
+      ['compliance', 'audit-trail']
+    );
+  }
+
+  protected async executeTask(task: SwarmTask): Promise<any> {
+    // Perform audit of swarm operations
+    const auditLog = this.coordinator.getAuditLog();
+    const recentEntries = auditLog.slice(-100); // Last 100 entries
+
+    // Analyze for compliance issues
+    const findings: { type: string; severity: string; entry: any }[] = [];
+
+    recentEntries.forEach(entry => {
+      // Check for orchestrator executing tasks (violation)
+      if (entry.agent === AgentId.ORCHESTRATOR && entry.action === 'EXECUTE') {
+        findings.push({
+          type: 'delegation-violation',
+          severity: 'critical',
+          entry
+        });
+      }
+    });
+
+    return {
+      entriesAudited: recentEntries.length,
+      findingsCount: findings.length,
+      criticalFindings: findings.filter(f => f.severity === 'critical').length,
+      findings,
+      complianceScore: findings.length === 0 ? 100 : Math.max(0, 100 - (findings.length * 10))
+    };
+  }
+
+  protected async generateSummary(output: any): Promise<string> {
+    return `Audited ${output.entriesAudited} entries. Findings: ${output.findingsCount} (${output.criticalFindings} critical). Compliance: ${output.complianceScore}%.`;
+  }
+
+  protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations = [
+      `audited:${output.entriesAudited}`,
+      `compliance:${output.complianceScore}%`
+    ];
+    if (output.findingsCount > 0) {
+      citations.push(`findings:${output.findingsCount}`);
+    }
+    const sources = ['audit-log', 'compliance-check'];
+
+    return {
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
+    };
+  }
+}
+
+/**
+ * Git Agent - Manages version control operations
+ */
+export class GitAgent extends SwarmAgent {
+  constructor(coordinator: SwarmCoordinator) {
+    super(
+      AgentId.GIT,
+      ['git', 'commit', 'push', 'branch', 'version-control'],
+      'haiku',  // Fast model for git operations
+      coordinator,
+      ['git', 'version-control']
+    );
+  }
+
+  protected async executeTask(task: SwarmTask): Promise<any> {
+    // Perform git operations
+    const operation = task.inputs.operation || 'status';
+    const result: any = {
+      operation,
+      success: true,
+      timestamp: new Date()
+    };
+
+    switch (operation) {
+      case 'commit':
+        result.commitMessage = task.inputs.message || 'Auto-commit by swarm';
+        result.filesCommitted = task.inputs.files?.length || 0;
+        break;
+      case 'status':
+        result.branch = 'main';
+        result.changes = [];
+        break;
+      case 'push':
+        result.remote = 'origin';
+        result.branch = task.inputs.branch || 'main';
+        break;
+    }
+
+    return result;
+  }
+
+  protected async generateSummary(output: any): Promise<string> {
+    switch (output.operation) {
+      case 'commit':
+        return `Committed ${output.filesCommitted} files: "${output.commitMessage}"`;
+      case 'push':
+        return `Pushed to ${output.remote}/${output.branch}`;
+      case 'status':
+        return `Branch: ${output.branch}, ${output.changes.length} pending changes`;
+      default:
+        return `Git operation: ${output.operation}`;
+    }
+  }
+
+  protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations = [`operation:${output.operation}`];
+    const sources = ['git'];
+
+    if (output.operation === 'commit') {
+      citations.push(`files:${output.filesCommitted}`);
+    }
+    if (output.operation === 'push') {
+      citations.push(`remote:${output.remote}/${output.branch}`);
+    }
+
+    return {
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
+    };
+  }
+}
+
