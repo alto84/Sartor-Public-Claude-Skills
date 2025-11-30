@@ -299,6 +299,32 @@ export abstract class SwarmAgent {
   }
 
   /**
+   * Calculate confidence dynamically based on evidence quality
+   * IMPORTANT: Never return hardcoded values - derive from actual evidence
+   */
+  protected calculateConfidence(evidence: Partial<Evidence>): number {
+    let confidence = 0.5; // Start at uncertain baseline
+
+    // Citations increase confidence
+    if (evidence.citations && evidence.citations.length > 0) {
+      confidence += Math.min(evidence.citations.length * 0.1, 0.25);
+    }
+
+    // Multiple sources increase confidence
+    if (evidence.sources && evidence.sources.length > 1) {
+      confidence += Math.min((evidence.sources.length - 1) * 0.05, 0.15);
+    }
+
+    // Speculative content reduces confidence
+    if (evidence.isSpeculative) {
+      confidence -= 0.2;
+    }
+
+    // Clamp between 0.1 and 0.95 - never claim absolute certainty or complete ignorance
+    return Math.max(0.1, Math.min(0.95, confidence));
+  }
+
+  /**
    * Log message
    */
   protected log(message: string): void {
@@ -335,10 +361,21 @@ export class AssessmentAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations: string[] = [];
+    const sources = ['task-inputs'];
+
+    // Add citations based on what was actually analyzed
+    if (output.requirements?.length > 0) {
+      citations.push(`analyzed-${output.requirements.length}-requirements`);
+    }
+    if (output.dependencies?.length > 0) {
+      citations.push(`found-${output.dependencies.length}-dependencies`);
+    }
+
     return {
-      citations: [],
-      confidence: 0.85,
-      sources: ['task-inputs']
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
     };
   }
 }
@@ -372,10 +409,22 @@ export class ImplementationAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations: string[] = [];
+    const sources = ['code-analysis'];
+
+    // Citations based on what was actually changed
+    if (output.files?.length > 0) {
+      citations.push(`modified-${output.files.length}-files`);
+      sources.push('file-system');
+    }
+    if (output.linesAdded > 0) {
+      citations.push(`added-${output.linesAdded}-lines`);
+    }
+
     return {
-      citations: [],
-      confidence: 0.9,
-      sources: ['code-analysis']
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
     };
   }
 }
@@ -409,10 +458,25 @@ export class ValidationAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations = ['test-results'];
+    const sources = ['test-runner'];
+
+    // High confidence when tests pass, lower when they fail
+    if (output.testsRun > 0) {
+      citations.push(`ran-${output.testsRun}-tests`);
+      if (output.passed > 0) {
+        citations.push(`${output.passed}-passed`);
+      }
+      if (output.failed > 0) {
+        citations.push(`${output.failed}-failed`);
+      }
+    }
+
+    // Test results are verifiable evidence
     return {
-      citations: ['test-results'],
-      confidence: 0.95,
-      sources: ['test-runner']
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
     };
   }
 }
@@ -445,10 +509,14 @@ export class ResearchAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    // Research evidence comes directly from sources found
+    const citations = output.sources || [];
+    const sources = output.sources || [];
+
     return {
-      citations: output.sources,
-      confidence: 0.8,
-      sources: output.sources
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
     };
   }
 
@@ -489,10 +557,21 @@ export class SynthesisAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations: string[] = [];
+    const sources = ['synthesis'];
+
+    // Synthesis draws from multiple sources
+    if (output.sections?.length > 0) {
+      citations.push(`synthesized-${output.sections.length}-sections`);
+    }
+    if (output.wordCount > 0) {
+      citations.push(`produced-${output.wordCount}-words`);
+    }
+
     return {
-      citations: [],
-      confidence: 0.85,
-      sources: ['synthesis']
+      citations,
+      confidence: this.calculateConfidence({ citations, sources }),
+      sources
     };
   }
 }
@@ -522,11 +601,19 @@ export class AutonomousAgent extends SwarmAgent {
   }
 
   protected async gatherEvidence(output: any): Promise<Evidence> {
+    const citations: string[] = [];
+    const sources = ['pattern-analysis'];
+
+    // Suggestions are inherently speculative
+    if (output.suggestions?.length > 0) {
+      citations.push(`generated-${output.suggestions.length}-suggestions`);
+    }
+
     return {
-      citations: [],
-      confidence: 0.7,
-      sources: ['pattern-analysis'],
-      isSpeculative: true
+      citations,
+      confidence: this.calculateConfidence({ citations, sources, isSpeculative: true }),
+      sources,
+      isSpeculative: true  // Autonomous suggestions are always speculative
     };
   }
 }

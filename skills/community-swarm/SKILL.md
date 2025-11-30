@@ -43,6 +43,51 @@ Do NOT activate this skill when:
 
 ---
 
+## Agent Count: 8-10 Agents Explained
+
+This skill supports **8-10 agents** rather than a fixed number. Here's why:
+
+### Core 8 Agents (from `enhanced-multi-agent-orchestration`)
+1. Assessment Agent
+2. Implementation Agent
+3. Validation Agent
+4. Research Agent
+5. Synthesis Agent
+6. Quality Gate Agent
+7. Monitor Agent
+8. Git Agent
+
+### Additional 2 Agents (community-swarm extension)
+9. **Audit Agent** - Provides compliance verification and decision review
+10. **Autonomous Improvement Agent** - Enables continuous improvement suggestions
+
+### When to Use 8 vs 10 Agents
+
+| Agent Count | Use When |
+|-------------|----------|
+| **8 agents** | Standard workflows, moderate complexity, resource-conscious environments |
+| **10 agents** | High-stakes tasks requiring audit trails and continuous improvement |
+
+### Configuration
+
+```typescript
+// Use 8 agents (disable audit + autonomous)
+const swarm = new CommunitySwarm({
+  agents: { /* omit AUDIT and AUTONOMOUS */ },
+  agentCount: 8
+});
+
+// Use full 10 agents
+const swarm = new CommunitySwarm({
+  agents: { /* include all 10 */ },
+  agentCount: 10
+});
+```
+
+This flexibility allows the skill to integrate with `enhanced-multi-agent-orchestration` (8 agents) while extending it for scenarios requiring audit and autonomous improvement capabilities.
+
+---
+
 ## The 10-Agent Architecture
 
 ```text
