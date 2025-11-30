@@ -4,7 +4,7 @@ A comprehensive collection of specialized skills for Claude Code, focusing on mu
 
 ## Overview
 
-This repository contains **10 specialized skills** that enhance Claude Code's capabilities in complex software engineering tasks. Each skill provides detailed methodologies, reference materials, templates, and examples for specific domains.
+This repository contains **11 specialized skills** that enhance Claude Code's capabilities in complex software engineering tasks. Each skill provides detailed methodologies, reference materials, templates, and examples for specific domains.
 
 ### Skill Categories
 
@@ -28,10 +28,10 @@ This repository contains **10 specialized skills** that enhance Claude Code's ca
 └───────────────┘   ├─────────────────┤   ├─────────────────┤
                     │ MCP Server      │   │ Autonomous      │
                     │ Development     │   │ Action Agent    │
-                    ├─────────────────┤   └─────────────────┘
-                    │ Distributed Sys │
-                    │ Debugging       │
-                    └─────────────────┘
+                    ├─────────────────┤   ├─────────────────┤
+                    │ Distributed Sys │   │ Community       │
+                    │ Debugging       │   │ Swarm           │
+                    └─────────────────┘   └─────────────────┘
 ```
 
 ## Skills Catalog
@@ -176,6 +176,21 @@ Guides systematic safety research including literature review, multi-agent resea
 - Integration patterns
 - Anti-patterns prevention
 
+#### 11. Community Swarm
+**Location:** `skills/community-swarm/`
+
+**NEW** - Orchestrates a community of 8-10 Claude agents working together using inter-agent communication protocols. The orchestrator delegates only - it never executes tasks directly.
+
+**Use when:** Complex tasks requiring multiple specialized perspectives, parallel execution, peer review, or auditable evidence-based outputs.
+
+**Key Components:**
+- 8-10 specialized agents with defined roles
+- Delegation-only orchestration pattern
+- Inter-agent communication protocols
+- Quality gates and validation pipeline
+- Context protection for orchestrator
+- Comprehensive hook system
+
 ---
 
 ## Installation
@@ -243,7 +258,12 @@ These skills are built on several core principles:
 
 ## Recent Updates
 
-**2025-11-29**: Major enhancement release
+**2025-11-29**: Major enhancement release (Part 2)
+- Added Community Swarm skill (8-10 agent orchestration with delegation-only pattern)
+- Enhanced agent-communication-system with complete TypeScript templates
+- Added comprehensive validation frameworks
+
+**2025-11-29**: Major enhancement release (Part 1)
 - Added 3 new skills (Enhanced Multi-Agent Orchestration, Autonomous Action Agent, Unified Skills Orchestrator)
 - Added VALIDATION.md files to all skills
 - Added "When NOT to Use" sections to all skills
