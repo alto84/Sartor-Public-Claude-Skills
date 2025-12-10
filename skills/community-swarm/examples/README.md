@@ -15,7 +15,24 @@ A simple example showing:
 
 **Run:**
 ```bash
-npx ts-node basic-swarm-usage.ts
+npx ts-node examples/basic-swarm-usage.ts
+```
+
+### 2. Advanced Swarm Collaboration (`advanced-swarm-collaboration.ts`)
+
+A comprehensive example showing full 10-agent collaboration:
+- Spawning all 10 agents (6 opus + 4 haiku)
+- Complex task decomposition
+- Inter-agent communication and assistance
+- Quality gate validation
+- Monitoring and health checks
+- Compliance auditing
+- Git operations
+- Autonomous improvement suggestions
+
+**Run:**
+```bash
+npx ts-node examples/advanced-swarm-collaboration.ts
 ```
 
 ## Key Concepts Demonstrated

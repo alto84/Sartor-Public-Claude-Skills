@@ -1,0 +1,50 @@
+{
+  "name": "community-swarm",
+  "version": "1.0.0",
+  "description": "Community Swarm - 10-agent orchestration skill for Claude Code",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "cd tests && npm test",
+    "example:basic": "npx ts-node examples/basic-swarm-usage.ts",
+    "example:advanced": "npx ts-node examples/advanced-swarm-collaboration.ts",
+    "spawn": "npx ts-node scripts/spawn-swarm.ts",
+    "lint": "eslint 'templates/**/*.ts' 'examples/**/*.ts' 'scripts/**/*.ts'",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "multi-agent",
+    "swarm",
+    "orchestration",
+    "delegation",
+    "mcp",
+    "evidence-based"
+  ],
+  "author": "Sartor Skills Library",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "examples",
+    "scripts",
+    "reference",
+    "SKILL.md",
+    "README.md"
+  ]
+}
