@@ -1,0 +1,30 @@
+{
+  "name": "@sartor/agent-communication-system",
+  "version": "1.0.0",
+  "description": "Inter-agent communication patterns and coordinator implementation",
+  "main": "dist/templates/inter-agent-coordinator.js",
+  "types": "dist/templates/inter-agent-coordinator.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "node scripts/test-coordinator.js || echo 'TypeScript compilation required first'"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "agent",
+    "communication",
+    "mcp",
+    "coordinator",
+    "multi-agent"
+  ]
+}

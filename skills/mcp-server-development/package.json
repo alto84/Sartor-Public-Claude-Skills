@@ -1,0 +1,28 @@
+{
+  "name": "@sartor/mcp-server-development",
+  "version": "1.0.0",
+  "description": "MCP server development patterns and templates",
+  "main": "dist/templates/basic-mcp-server.js",
+  "types": "dist/templates/basic-mcp-server.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "mcp",
+    "server",
+    "model-context-protocol",
+    "tools"
+  ]
+}

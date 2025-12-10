@@ -1,0 +1,28 @@
+{
+  "name": "@sartor/autonomous-action-agent",
+  "version": "1.0.0",
+  "description": "Autonomous improvement agent for multi-agent workflows",
+  "main": "dist/templates/suggestion-types.js",
+  "types": "dist/templates/suggestion-types.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "agent",
+    "autonomous",
+    "improvement",
+    "suggestions"
+  ]
+}

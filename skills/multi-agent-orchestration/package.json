@@ -1,0 +1,28 @@
+{
+  "name": "@sartor/multi-agent-orchestration",
+  "version": "1.0.0",
+  "description": "Multi-agent orchestration patterns and coordination",
+  "main": "dist/templates/orchestrator-template.js",
+  "types": "dist/templates/orchestrator-template.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "orchestration",
+    "multi-agent",
+    "coordination",
+    "consensus"
+  ]
+}

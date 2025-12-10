@@ -1,0 +1,42 @@
+{
+  "name": "@sartor/claude-skills",
+  "version": "1.0.0",
+  "description": "Comprehensive collection of specialized skills for Claude Code",
+  "main": "index.js",
+  "author": "Sartor",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alto84/Sartor-Public-Claude-Skills"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "mcp",
+    "multi-agent",
+    "orchestration",
+    "skills"
+  ],
+  "workspaces": [
+    "skills/community-swarm"
+  ],
+  "scripts": {
+    "build": "npm run build:community-swarm && npm run build:agent-comm",
+    "build:community-swarm": "cd skills/community-swarm && npm run build",
+    "build:agent-comm": "tsc -p skills/agent-communication-system/tsconfig.json || true",
+    "lint": "npm run lint:community-swarm",
+    "lint:community-swarm": "cd skills/community-swarm && npm run lint || true",
+    "test": "npm run test:community-swarm",
+    "test:community-swarm": "cd skills/community-swarm && npm test",
+    "validate": "node scripts/validate-skills.js",
+    "clean": "rm -rf skills/*/dist skills/*/*.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@sartor/unified-skills-orchestrator",
+  "version": "1.0.0",
+  "description": "Meta-skill for coordinating all skills in the library",
+  "main": "dist/templates/orchestrator-config.js",
+  "types": "dist/templates/orchestrator-config.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "orchestrator",
+    "skills",
+    "meta-skill",
+    "coordination"
+  ]
+}

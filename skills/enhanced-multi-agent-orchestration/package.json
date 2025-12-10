@@ -1,0 +1,28 @@
+{
+  "name": "@sartor/enhanced-multi-agent-orchestration",
+  "version": "1.0.0",
+  "description": "8-agent orchestration with context protection and quality gates",
+  "main": "dist/templates/orchestration-config-template.js",
+  "types": "dist/templates/orchestration-config-template.d.ts",
+  "author": "Sartor",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "reference/"
+  ],
+  "keywords": [
+    "orchestration",
+    "multi-agent",
+    "quality-gates",
+    "context-protection"
+  ]
+}
