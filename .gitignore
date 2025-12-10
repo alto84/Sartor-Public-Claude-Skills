@@ -41,6 +41,10 @@ dist/
 build/
 *.egg-info/
 
+# TypeScript
+*.tsbuildinfo
+*.d.ts.map
+
 # Testing
 .coverage
 .pytest_cache/

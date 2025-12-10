@@ -256,7 +256,48 @@ These skills are built on several core principles:
 5. **Quality Assurance**: Validation and testing protocols for all components
 6. **Let Claude Be Claude**: Creative latitude within evidence-based constraints
 
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- TypeScript 5+
+
+### Building
+
+```bash
+# Install dependencies
+npm install
+
+# Build all TypeScript skills
+npm run build
+
+# Clean build artifacts
+npm run clean
+```
+
+### Validation
+
+Run the validation script to ensure all skills have consistent structure:
+
+```bash
+npm run validate
+```
+
+All 11 skills should pass validation:
+```
+Skills checked: 11
+Valid: 11
+With issues: 0
+```
+
 ## Recent Updates
+
+**2025-12-10**: Structural consistency release
+- Added root-level package.json and tsconfig.json
+- Added validation script for skill structure
+- Ensured all TypeScript skills have proper build configuration
+- Added CONTRIBUTING.md with development guidelines
 
 **2025-11-29**: Major enhancement release (Part 2)
 - Added Community Swarm skill (8-10 agent orchestration with delegation-only pattern)
@@ -272,7 +313,9 @@ These skills are built on several core principles:
 
 ## Contributing
 
-Contributions are welcome! If you'd like to:
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+If you'd like to:
 - Add new skills
 - Improve existing skills
 - Fix bugs or documentation
